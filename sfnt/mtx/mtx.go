@@ -15,7 +15,9 @@ import (
 	"unsafe"
 )
 
-func DecodeCTF(r io.Reader) ([]byte, error) {
+// Decode reads the compressed MTX Font Format from the reader and returns the
+// uncompressed bytes, or an error on failure.
+func Decode(r io.Reader) ([]byte, error) {
 	buf, err := ioutil.ReadAll(r)
 	if err != nil {
 		return nil, err

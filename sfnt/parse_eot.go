@@ -3,11 +3,10 @@ package sfnt
 import (
 	"bytes"
 	"encoding/binary"
+	"fmt"
 	"io"
 
 	"github.com/ConradIrwin/font/sfnt/mtx"
-
-	"fmt"
 )
 
 // https://www.w3.org/Submission/EOT/#FileFormat
@@ -82,7 +81,7 @@ func parseEOT(file File, header *eotHeader) (File, error) {
 	}
 
 	if header.Flags&ttembedCompressed != 0 {
-		ctf, err := mtx.DecodeCTF(file)
+		ctf, err := mtx.Decode(file)
 		if err != nil {
 			return nil, err
 		}
