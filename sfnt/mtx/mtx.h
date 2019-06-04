@@ -30,7 +30,9 @@ typedef struct {
 
 bool mtx_init(mtx_t **state, const uint8_t *data, size_t size);
 bool mtx_dump(mtx_t *state);
-bool mtx_getCTF(mtx_t *state, uint8_t **data, size_t *size);
+bool mtx_getRest(mtx_t *mtx, uint8_t **data, size_t *size);
+bool mtx_getData(mtx_t *mtx, uint8_t **data, size_t *size);
+bool mtx_getCode(mtx_t *mtx, uint8_t **data, size_t *size);
 bool mtx_fini(mtx_t *state);
 
 #else
