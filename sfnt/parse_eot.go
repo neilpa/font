@@ -5,8 +5,6 @@ import (
 	"encoding/binary"
 	"fmt"
 	"io"
-	"os"
-	"unicode/utf16"
 
 	"github.com/ConradIrwin/font/sfnt/mtx"
 )
@@ -89,13 +87,6 @@ type eotDynamicHeader struct {
 // returns the corresponding error.
 func checkEOT(file File) (*eotHeader, error) {
 	var header eotHeader
-	file.Seek(0, 0)
-	switch f := file.(type) {
-		case *os.File:
-		fi, _ := f.Stat()
-		fmt.Println(fi.Size())
-	}
-
 	err := binary.Read(file, binary.LittleEndian, &header)
 	if err == io.EOF {
 		return nil, nil
@@ -105,9 +96,7 @@ func checkEOT(file File) (*eotHeader, error) {
 	}
 
 	// Validate the EOT magic number
-	fmt.Printf("Magic 0x%X\n", header.MagicNumber)
 	if header.MagicNumber != 0x504c {
-		fmt.Println("Not right")
 		return nil, nil
 	}
 	return &header, nil
@@ -133,8 +122,6 @@ func parseEOT(file File, header *eotHeader) (File, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Printf("%+v\n", dynHeader)
 
 	ctf, err := mtx.DecodeCTF(file)
 	if err != nil {
@@ -210,7 +197,6 @@ func readPaddedUTF16(r io.Reader, padding, bytes *uint16, buffer *[]uint16) erro
 	// TODO Can bytes by 0? What about non-even?
 	*buffer = make([]uint16, *bytes/2)
 	err = binary.Read(r, binary.LittleEndian, *buffer)
-	fmt.Println(string(utf16.Decode(*buffer)))
 	return err
 }
 
