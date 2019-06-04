@@ -5,7 +5,7 @@ font
 
 A collection of Go packages for parsing and encoding OpenType fonts.
 
-The main contribution of this repository is the [SFNT](https://godoc.org/github.com/ConradIrwin/font/sfnt) library which provides support for parsing OpenType, TrueType, WOFF, and WOFF2 fonts.
+The main contribution of this repository is the [SFNT](https://godoc.org/github.com/ConradIrwin/font/sfnt) library which provides support for parsing EOT, OpenType, TrueType, WOFF, and WOFF2 fonts.
 
 Also included is a utility called `font` that can do various useful things with fonts:
 
@@ -34,7 +34,7 @@ font stats ~/Downloads/Fanwood.ttf
 TODO
 ----
 
-Still missing is support for parsing EOT files (which should be easy to add). Also support for generating WOFF files (which is annoyingly fiddly due to the checksum calculation) and WOFF2 files (needs a Brotli encoder), and a whole load of code around dealing with the hundreds of other SFNT table formats.
+Support for generating WOFF files (which is annoyingly fiddly due to the checksum calculation) and WOFF2 files (needs a Brotli encoder), and a whole load of code around dealing with the hundreds of other SFNT table formats.
 
 Font file formats
 -----------------

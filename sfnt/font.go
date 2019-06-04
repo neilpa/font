@@ -195,21 +195,33 @@ func New(scalerType Tag) *Font {
 
 // File is a combination of io.Reader, io.Seeker and io.ReaderAt.
 // This interface is satisfied by most things that you'd want
-// to parse, for example os.File, or io.SectionReader.
+// to parse, for example os.File, io.SectionReader or bytes.Reader.
 type File interface {
 	Read([]byte) (int, error)
 	ReadAt([]byte, int64) (int, error)
 	Seek(int64, int) (int64, error)
 }
 
-// Parse parses an OpenType, TrueType, WOFF, or WOFF2 file and returns a Font.
+// Parse parses an EOT, OpenType, TrueType, WOFF, or WOFF2 file and returns a Font.
 // If parsing fails, an error is returned and *Font will be nil.
 func Parse(file File) (*Font, error) {
+	// Check for an EOT first to extract the embedded data
+	header, err := checkEOT(file)
+	if err != nil {
+		return nil, err
+	}
+	if header != nil {
+		file, err = parseEOT(file, header)
+		if err != nil {
+			return nil, err
+		}
+	}
+	file.Seek(0, 0)
+
 	magic, err := ReadTag(file)
 	if err != nil {
 		return nil, err
 	}
-
 	file.Seek(0, 0)
 
 	switch magic {
@@ -224,7 +236,7 @@ func Parse(file File) (*Font, error) {
 	}
 }
 
-// StrictParse parses an OpenType, TrueType, WOFF or WOFF2 file and returns a Font.
+// StrictParse parses an EOT, OpenType, TrueType, WOFF or WOFF2 file and returns a Font.
 // Each table will be fully parsed and an error is returned if any fail.
 func StrictParse(file File) (*Font, error) {
 	font, err := Parse(file)
