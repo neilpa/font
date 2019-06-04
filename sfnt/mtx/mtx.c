@@ -7,10 +7,10 @@
 #include <assert.h>
 
 #include "mtx.h"
-#include "lzcomp/config.h"
-#include "lzcomp/bitio.h"
-#include "lzcomp/ahuff.h"
-#include "lzcomp/lzcomp.h"
+#include "config.h"
+#include "bitio.h"
+#include "ahuff.h"
+#include "lzcomp.h"
 
 static uint32_t mtx_ntoh24(uint32_t v)
 {
