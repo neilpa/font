@@ -3,7 +3,6 @@ package sfnt
 import (
 	"bytes"
 	"encoding/binary"
-	"fmt"
 	"io"
 
 	"github.com/ConradIrwin/font/sfnt/mtx"
@@ -71,22 +70,45 @@ func parseEOT(file File, header *eotHeader) (File, error) {
 	// Skip decoding the dynamic header data and seek to the FontData
 	// that's appended at the end of the file
 	size := int64(header.FontDataSize)
-	start, err := file.Seek(-size, io.SeekEnd)
-	if err != nil {
-		return nil, err
-	}
+	start := int64(header.EOTSize) - size
+	var fontData File = io.NewSectionReader(file, start, size)
 
 	if header.Flags&ttembedXOREncryptData != 0 {
-		return nil, fmt.Errorf("TODO: handle xor decrypt")
+		fontData = &xored{inner: fontData}
 	}
 
 	if header.Flags&ttembedCompressed != 0 {
-		ctf, err := mtx.Decode(file)
+		ctf, err := mtx.Decode(fontData)
 		if err != nil {
 			return nil, err
 		}
 		return bytes.NewReader(ctf), nil
 	} else {
-		return io.NewSectionReader(file, start, size), nil
+		return fontData, nil
 	}
+}
+
+// https://www.w3.org/Submission/EOT/#Processing
+type xored struct {
+	inner File
+}
+
+func (x xored) Read(p []byte) (int, error) {
+	n, err := x.inner.Read(p)
+	for i, b := range p[:n] {
+		p[i] = b ^ 0x50
+	}
+	return n, err
+}
+
+func (x xored) ReadAt(p []byte, off int64) (int, error) {
+	n, err := x.inner.ReadAt(p, off)
+	for i, b := range p[:n] {
+		p[i] = b ^ 0x50
+	}
+	return n, err
+}
+
+func (x xored) Seek(offset int64, whence int) (int64, error) {
+	return x.inner.Seek(offset, whence)
 }
