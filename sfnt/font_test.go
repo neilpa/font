@@ -19,6 +19,8 @@ func TestSmokeTest(t *testing.T) {
 		{filename: "Raleway-v4020-Regular.otf"},
 		{filename: "open-sans-v15-latin-regular.woff"},
 		{filename: "Go-Regular.woff2"},
+		{filename: "DroidSansMono-webfont.eot"},
+		{filename: "DroidSansMono-compressed.eot"},
 	}
 
 	for _, test := range tests {
@@ -107,4 +109,12 @@ func BenchmarkParseWOFF2(b *testing.B) {
 
 func BenchmarkStrictParseWOFF2(b *testing.B) {
 	benchmarkStrictParse(b, "Go-Regular.woff2")
+}
+
+func BenchmarkParseEOT(b *testing.B) {
+	benchmarkParse(b, "DroidSansMono-compressed.eot")
+}
+
+func BenchmarkStrictParseEOT(b *testing.B) {
+	benchmarkStrictParse(b, "DroidSansMono-compressed.eot")
 }
