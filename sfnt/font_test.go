@@ -50,12 +50,14 @@ func TestSmokeTest(t *testing.T) {
 //   go test -cpuprofile cpu.prof -benchmem -memprofile mem.prof -bench . -run=^$ -benchtime=30s github.com/ConradIrwin/font/sfnt
 //   go tool pprof cpu.prof
 //
-// BenchmarkParseOTF-8           	20000000	      3209 ns/op	    1229 B/op	      32 allocs/op
-// BenchmarkStrictParseOTF-8     	  200000	    184822 ns/op	  372415 B/op	    1616 allocs/op
-// BenchmarkParseWOFF-8          	10000000	      3999 ns/op	    1993 B/op	      40 allocs/op
-// BenchmarkStrictParseWOFF-8    	   50000	    776500 ns/op	  575990 B/op	     497 allocs/op
-// BenchmarkParseWOFF2-8         	   20000	   2011769 ns/op	  742531 B/op	     468 allocs/op
-// BenchmarkStrictParseWOFF2-8   	   20000	   2033596 ns/op	  875608 B/op	     818 allocs/op
+// BenchmarkParseOTF-8           	20000000	      3523 ns/op	    1565 B/op	      55 allocs/op
+// BenchmarkStrictParseOTF-8     	  300000	    146234 ns/op	  372449 B/op	    1639 allocs/op
+// BenchmarkParseWOFF-8          	10000000	      4314 ns/op	    2325 B/op	      63 allocs/op
+// BenchmarkStrictParseWOFF-8    	  100000	    510401 ns/op	  576019 B/op	     520 allocs/op
+// BenchmarkParseWOFF2-8         	   30000	   1314407 ns/op	  742321 B/op	     491 allocs/op
+// BenchmarkStrictParseWOFF2-8   	   30000	   1356556 ns/op	  875153 B/op	     841 allocs/op
+// BenchmarkParseEOT-8           	10000000	      4114 ns/op	    2003 B/op	      62 allocs/op
+// BenchmarkStrictParseEOT-8     	 1000000	     48629 ns/op	  135364 B/op	     462 allocs/op
 func benchmarkParse(b *testing.B, filename string) {
 	buf, err := ioutil.ReadFile(filepath.Join("testdata", filename))
 	if err != nil {
