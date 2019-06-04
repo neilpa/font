@@ -1,6 +1,7 @@
 package mtx
 
 /*
+#cgo CFLAGS: -Wno-format -Wno-pointer-sign
 #cgo LDFLAGS: -L${SRCDIR}/lzcomp -llzcomp
 
 #include <stdlib.h>
