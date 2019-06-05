@@ -39,7 +39,7 @@ type eotHeader struct {
 // https://www.w3.org/Submission/EOT/#Flags
 const (
 	ttembedSubset         uint32 = 0x00000001
-	ttembedCompressed   uint32 = 0x00000004
+	ttembedCompressed     uint32 = 0x00000004
 	ttembedXOREncryptData uint32 = 0x10000000
 )
 
